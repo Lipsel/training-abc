@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api, _
 
 class RealEstate(models.Model):
     _name = "real.estate"
@@ -25,14 +25,21 @@ class RealEstate(models.Model):
         invisible=True
     )
     
+    expected_price = fields.Float(
+        required=True
+    )
     
-    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(
+        readonly=True
+    )
     
-    selling_price = fields.Float(readonly=True)
+    bedrooms = fields.Integer(
+        default=2
+    )
     
-    bedrooms = fields.Integer(default=2)
-    
-    living_area = fields.Integer(string="Living Area (sqm)")
+    living_area = fields.Integer(
+        string="Living Area (sqm)"
+    )
     
     facades = fields.Integer()
     
@@ -41,6 +48,16 @@ class RealEstate(models.Model):
     garden = fields.Boolean()
     
     garden_area = fields.Integer()
+    
+    total_area = fields.Integer(
+        string="Total Area (sqm)",
+        compute="_compute_total_area"
+    )
+    
+    best_offer = fields.Float(
+        string="Best Offer Price",
+        compute="_compute_best_offer"
+    )
     
     garden_orientation = fields.Selection(
         [
@@ -87,6 +104,34 @@ class RealEstate(models.Model):
         index=True
     )
     
+    #Fa la somma di living area e garden area per vedere l'area totale
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+    
+    @api.depends("offer_ids.price")  
+    def _compute_best_offer(self):
+        for record in self:
+            record.best_offer = max(record.offer_ids.mapped('price')) if record.offer_ids else 0
+    
+    
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        for estate in self:
+            if not estate.garden:
+                estate.garden_area = 0
+    
+    
+    @api.onchange("date_availability")
+    def _onchange_date_availability(self):
+        for estate in self:
+            return {
+                "warning": {
+                    "title": _("Warning"),
+                    "message": ("My message")
+                }
+            }
     
     
     

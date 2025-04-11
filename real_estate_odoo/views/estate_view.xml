@@ -40,11 +40,12 @@
                         <field name="real_estate_type_id"/>
                         <field name="postcode"/>
                         <field name="date_availability"/>
-                        <field name="expected_price"/>
-                        <field name="selling_price"/>
+                        <field name="description" placeholder="Enter a detailed description..."/>
                     </group>
                     <group>
-                        <field name="description" placeholder="Enter a detailed description..."/>
+                        <field name="expected_price"/>
+                        <field name="selling_price"/>
+                        <field name="best_offer"/>
                     </group>
                 </group>
 
@@ -72,6 +73,9 @@
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                                 <field name="facades"/>
+                            </group>
+                            <group string="Total Area">
+                                <field name="total_area"/>
                             </group>
                         </group>
                     </page>
