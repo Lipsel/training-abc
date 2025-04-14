@@ -1,0 +1,56 @@
+<!-- views/real_estate_type_views.xml -->
+<odoo>
+
+    <!-- Tree View -->
+    <record id="view_real_estate_type_tree" model="ir.ui.view">
+        <field name="name">real.estate.type.list</field>
+        <field name="model">real.estate.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_real_estate_type_form" model="ir.ui.view">
+        <field name="name">real.estate.type.form</field>
+        <field name="model">real.estate.type</field>
+        <field name="arch" type="xml">
+            <form string="Real Estate Type">
+                <sheet>
+                    <group>
+                        <field name="sequence" widget="handle"/>
+                        <field name="name"/>
+                    </group>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_real_estate_type" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">real.estate.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menu Structure -->
+    <menuitem id="real_estate_type_menu_root" name="Configuration" 
+              parent="real_estate_first_level_menu" sequence="20"/>
+              
+    <menuitem id="real_estate_type_menu" name="Property Types"
+              parent="real_estate_type_menu_root" 
+              action="action_real_estate_type"/>
+</odoo>
