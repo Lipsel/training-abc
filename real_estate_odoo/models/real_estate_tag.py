@@ -4,7 +4,7 @@ from odoo.exceptions import ValidationError
 class EstatePropertyTag(models.Model):
     _name = 'real.estate.tag'
     _description = 'Property Tag'
-    _order = "name desc"
+    _order = "name"
     
 
     name = fields.Char(required=True)

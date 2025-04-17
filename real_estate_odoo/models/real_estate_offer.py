@@ -77,6 +77,25 @@ class RealEstateOffer(models.Model):
         for record in self:
             if record.price <= 0:
                 raise ValidationError("Il prezzo offerto deve essere positivo")
+            
+    
+    @api.model
+    def create(self, vals):
+        # Get the property record
+        property_id = vals.get('property_id')
+        if property_id:
+            property = self.env['real.estate'].browse(property_id)
+            
+            # Check if new offer price is lower than existing offers
+            existing_offers = property.offer_ids.mapped('price')
+            if existing_offers and vals.get('price', 0.0) < max(existing_offers):
+                raise UserError(_("Cannot create an offer with a lower amount than existing offers."))
+            
+            # Update property state to "Offer Received" if it's "New"
+            if property.state == 'new':
+                property.write({'state': 'received'})
+        
+        return super(RealEstateOffer, self).create(vals)
     
     
                 

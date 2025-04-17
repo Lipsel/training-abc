@@ -3,7 +3,9 @@ from odoo.exceptions import UserError, ValidationError
 
 class RealEstate(models.Model):
     _name = "real.estate"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Real Estate Module"
+    _order = 'id desc'
     
     
     name = fields.Char(
@@ -185,6 +187,13 @@ class RealEstate(models.Model):
                 raise ValidationError(_("Il Valore Expected Price deve essere positivo"))
             if record.selling_price < 0:
                 raise ValidationError(_("Il Selling Price deve essere positivo"))
+    
+    
+    @api.ondelete(at_uninstall=False)
+    def _check_state_before_delete(self):
+        for record in self:
+            if record.state not in ('new', 'canceled'):
+                raise UserError(_("Non puoi cancellare una proprietà che è Venduta o Cancellata"))
     
     
     

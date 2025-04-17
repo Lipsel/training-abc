@@ -18,7 +18,7 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
 
     # always loaded
     'data': [
@@ -27,8 +27,8 @@ Long description of module's purpose
         'views/estate_view.xml',
         'views/estate_type_view.xml',
         'views/estate_offer_view.xml',
+        'views/estate_res_users.xml',
         'views/estate_tag_view.xml',
-        
     ],
     # only loaded in demonstration mode
     'demo': [

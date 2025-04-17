@@ -26,7 +26,7 @@
         <field name="name">real.estate.offer.list</field>
         <field name="model">real.estate.offer</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                 <field name="property_id"/>
                 <field name="partner_id"/>
                 <field name="price"/>
